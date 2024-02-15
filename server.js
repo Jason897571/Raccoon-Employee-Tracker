@@ -1,23 +1,16 @@
-const mysql = require('mysql2');
+
 const inquirer = require('inquirer');
 const express = require('express');
+const DatabaseOperation = require('./mysql_tool/mysql.js');
+require('./mysql_tool/mysql.js');
 
+const db = new DatabaseOperation();
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
-const db = mysql.createConnection(
-    {
-        host: 'localhost',
-        // MySQL username,
-        user: 'root',
-        // MySQL password
-        password: '',
-        database: 'employee_db'
-    },
-    console.log("DB connected")
-)
+
 
 const questions =[{
     type: 'list',
@@ -30,6 +23,27 @@ const questions =[{
     name: 'add_department',
     message: 'What is the name of the department you would like to add?',
     when: (answers) => answers.all_choice === "Add A Department"
+
+},
+{
+    type: 'input',
+    name: 'role_name',
+    message: 'What is the name of the role',
+    when: (answers) => answers.all_choice === "Add A Role"
+
+},
+{
+    type: 'input',
+    name: 'role_salary',
+    message: 'What is the salary of the role',
+    when: (answers) => answers.all_choice === "Add A Role"
+
+},
+{
+    type: 'input',
+    name: 'role_department',
+    message: 'which department does the role belong to',
+    when: (answers) => answers.all_choice === "Add A Role"
 
 },
 {
@@ -61,11 +75,14 @@ const questions =[{
 
 ]
 
-inquirer
+
+db.show_utilized_budget();
+
+/* inquirer
     .prompt(questions)
     .then((answers) => {
         
-    })
+    }) */
 
 
 
