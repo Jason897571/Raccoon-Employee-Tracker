@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
-const cTable = require('console.table');
+require('console.table');
+const chalk = require('chalk');
 
 class DatabaseOperation {
     constructor(){
@@ -61,12 +62,12 @@ class DatabaseOperation {
     };
 
     add_department(department_name,ask_questions){
-        this.db.execute("INSERT INTO department (name) VALUES (?);", department_name, (err, results) => {
+        this.db.execute("INSERT INTO department (name) VALUES (?);", [department_name], (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }
             else{
-                console.log(department_name + " department is added")
+                console.log(chalk.green(department_name + " department is added"))
                 ask_questions();
             }
         })
@@ -78,7 +79,7 @@ class DatabaseOperation {
                 console.log("Error:", err);
             }
             else{
-                console.log(role_title + " is added")
+                console.log(chalk.green(role_title + " is added"))
                 ask_questions();
             }
         })
@@ -90,7 +91,7 @@ class DatabaseOperation {
                 console.log("Error:", err);
             }
             else{
-                console.log("Employee " + first_name + " " + last_name + " is added")
+                console.log(chalk.green("Employee " + first_name + " " + last_name + " is added"))
                 ask_questions();
             }
         })
@@ -102,7 +103,7 @@ class DatabaseOperation {
                 console.log("Error:", err);
             }
             else{
-                console.log("Employee role is updated")
+                console.log(chalk.green("Employee role is updated"))
                 ask_questions();
             }
         })
@@ -114,7 +115,7 @@ class DatabaseOperation {
                 console.log("Error:", err);
             }
             else{
-                console.log(`The manager for employee ${employee_id} is updated to ${manager_id}`)
+                console.log(chalk.green(`The manager for employee ${employee_id} is updated to ${manager_id}`))
                 ask_questions();
             }
         })
@@ -151,7 +152,7 @@ class DatabaseOperation {
                 console.log("Error:", err);
             }
             else{
-                console.log(`The employee with id ${employee_id} is deleted`)
+                console.log(chalk.green(`The employee with id ${employee_id} is deleted`))
                 ask_questions();
             }
         })
@@ -164,7 +165,7 @@ class DatabaseOperation {
                 console.log("Error:", err);
             }
             else{
-                console.log(`The role with id ${role_id} is deleted`)
+                console.log(chalk.green(`The role with id ${role_id} is deleted`))
                 ask_questions();
             }
         })
@@ -176,19 +177,19 @@ class DatabaseOperation {
                 console.log("Error:", err);
             }
             else{
-                console.log(`The department with id ${department_id} is deleted`)
+                console.log(chalk.green(`The department with id ${department_id} is deleted`))
                 ask_questions();
             }
         })
     }
 
     show_utilized_budget(department_id,ask_questions){
-        this.db.execute('SELECT SUM(role.salary) AS utilized_budget FROM employee join role on employee.role_id = role.id where role.department_id = ?;', department_id,(err, results) => {
+        this.db.execute('SELECT SUM(role.salary) AS utilized_budget FROM employee join role on employee.role_id = role.id where role.department_id = ?;', [department_id],(err, results) => {
             if(err){
                 console.log("Error:", err);
             }
             else{
-                console.log(`Utilized budget: ${results[0].utilized_budget}`)
+                console.log(chalk.green(`Utilized budget: ${results[0].utilized_budget}`))
                 ask_questions();
             }
         })
@@ -204,7 +205,7 @@ class DatabaseOperation {
                 else{
                     const choices = results.map(employee => ({
                         name: `${employee.id}. ${employee.first_name} ${employee.last_name}`, // Adjust this according to your database structure
-                        value: employee.id // Assuming `id` is the unique identifier for each employee
+                        value: [employee.id,employee.manager_id] // Assuming `id` is the unique identifier for each employee
                     }));
                     resolve(choices);
                     
@@ -235,6 +236,26 @@ class DatabaseOperation {
        
         
     };
+
+    get_department_info = function(){
+        return new Promise((resolve, reject) => {
+            this.db.execute("SELECT * FROM department", (err, results) => {
+                if (err) {
+                    console.log("Error:", err);
+                    reject(err);
+                }
+                else{
+                    const choices = results.map(department => ({
+                        name: `${department.id}. ${department.name}`, // Adjust this according to your database structure
+                        value: department.id // Assuming `id` is the unique identifier for each employee
+                    }));
+                    resolve(choices);
+                    
+                }
+                
+            })
+        })
+    }
 }
 
 module.exports = DatabaseOperation;

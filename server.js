@@ -20,6 +20,9 @@ app.listen(PORT,()=>{
 async function getQuestions() {
     const employeeChoices = await db.get_employee_info();
     const roleChoices = await db.get_role_info();
+    const departmentChoices = await db.get_department_info();
+
+   
     
 
     const questions =[{
@@ -97,16 +100,83 @@ async function getQuestions() {
     {
         type: 'list',
         name: 'employee_id',
-        message: `whoich employee you would like to update role?`,
+        message: `which employee you would like to update role?`,
         choices: employeeChoices,
         when: (answers) => answers.all_choice === "Update An Employee Role"
     },
     {
         type: 'list',
         name: 'role_id',
-        message: `whoich role you would like to update for this employee?`,
+        message: `which role you would like to update for this employee?`,
         choices: roleChoices,
         when: (answers) => answers.all_choice === "Update An Employee Role"
+    },
+    {
+        type: 'list',
+        name: 'employee_id',
+        message: `which employee you would like to update manager for?`,
+        choices: employeeChoices,
+        when: (answers) => answers.all_choice === "Update employee managers"
+    },
+    {
+        type: 'list',
+        name: 'manager_id',
+        message: `who is the manager for this employee?`,
+        choices: employeeChoices,
+        when: (answers) => answers.all_choice === "Update employee managers"
+    },
+    {
+        type: 'list',
+        name: 'manager_id',
+        message: `Please choose the manager and view all the employees underneath`,
+        choices: employeeChoices,
+        when: (answers) => answers.all_choice === "View employees by manager"
+    },
+
+    {
+        type: 'list',
+        name: 'department_id',
+        message: `Please choose the department and view all the employees underneath`,
+        choices: departmentChoices,
+        when: (answers) => answers.all_choice === "View employees by department"
+    },
+
+    {
+        type: 'list',
+        name: 'delete_choice',
+        message: `what do you want to delete`,
+        choices: ["Delete Departments","Delete Roles", "Delete Employees"],
+        when: (answers) => answers.all_choice === "Delete departments, roles, and employees"
+    },
+
+    {
+        type: 'list',
+        name: 'delete_department',
+        message: `which department you want to delete?`,
+        choices: departmentChoices,
+        when: (answers) => answers.delete_choice === "Delete Departments"
+    },
+    {
+        type: 'list',
+        name: 'delete_role',
+        message: `which role you want to delete?`,
+        choices: roleChoices,
+        when: (answers) => answers.delete_choice === "Delete Roles"
+    },
+    {
+        type: 'list',
+        name: 'delete_employee',
+        message: `which employee you want to delete?`,
+        choices: employeeChoices,
+        when: (answers) => answers.delete_choice === "Delete Employees"
+    },
+
+    {
+        type: 'list',
+        name: 'utilized_budget',
+        message: `Please choose the department and view its budget`,
+        choices: departmentChoices,
+        when: (answers) => answers.all_choice === "View the total utilized budget for a department"
     },
     
     ]
@@ -152,10 +222,45 @@ const ask_questions = async ()=>{
         }
         else if(answers.all_choice === "Update An Employee Role"){
 
-            let employee_id = answers.employee_id;
+           
+            let employee_id = answers.employee_id[0];
             let role_id = answers.role_id;
             db.update_employee_role(employee_id, role_id,ask_questions);
+        }
+        else if(answers.all_choice === "Update employee managers"){
            
+            let employee_id = answers.employee_id[0];
+            let manager_id = answers.manager_id[0];
+            db.update_employee_manager(employee_id, manager_id,ask_questions);
+        }
+        else if(answers.all_choice === "View employees by manager"){
+           
+            let manager_id = answers.manager_id[0];
+            db.show_employee_by_manager(manager_id,ask_questions);
+        }
+
+        else if(answers.all_choice === "View employees by department"){
+           
+            let department_id = answers.department_id;
+            db.show_employee_by_department(department_id,ask_questions);
+        }
+        else if(answers.delete_choice === "Delete Departments"){
+           
+            db.delete_department(answers.delete_department,ask_questions);
+        }
+        else if(answers.delete_choice === "Delete Roles"){
+
+            db.delete_role(answers.delete_role,ask_questions);
+          
+        }
+        else if(answers.delete_choice === "Delete Employees"){
+           
+            db.delete_employee(answers.delete_employee,ask_questions);
+        }
+        else if(answers.all_choice === "View the total utilized budget for a department"){
+           
+            let department_id = answers.utilized_budget;
+            db.show_utilized_budget(department_id,ask_questions);
         }
     })
     
