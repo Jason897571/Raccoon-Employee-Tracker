@@ -16,156 +16,225 @@ class DatabaseOperation {
         )
     };
     
-    show_departments(){
-        this.db.query("SELECT * FROM department", (err, results) => {
+    show_departments(ask_questions){
+        
+        this.db.execute("SELECT * FROM department;", (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }
             else{
                 console.table(results)
+                ask_questions();
+                
             }
             
         })
         
     };
 
-    show_roles(){
-        this.db.query("SELECT * FROM role", (err, results) => {
+    show_roles(ask_questions){
+        this.db.execute("SELECT * FROM role;", (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }
             else{
                 console.table(results)
+                ask_questions()
             }
             
         })
         
     };
 
-    show_employees(){
-        this.db.query("SELECT * FROM employee", (err, results) => {
+    show_employees(ask_questions){
+        this.db.execute("SELECT * FROM employee;", (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }
             else{
                 console.table(results)
+                ask_questions();
             }
             
         })
         
     };
 
-    add_department(department_name){
-        this.db.query("INSERT INTO department (name) VALUES (?)", department_name, (err, results) => {
+    add_department(department_name,ask_questions){
+        this.db.execute("INSERT INTO department (name) VALUES (?);", department_name, (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }
             else{
                 console.log(department_name + " department is added")
+                ask_questions();
             }
         })
     };
 
-    add_role(role_title, role_salary, role_department_id){
-        this.db.query('INSERT INTO role (title, salary, department_id) VALUES (?,?,?);', [role_title, role_salary, role_department_id], (err, results) => {
+    add_role(role_title, role_salary, role_department_id,ask_questions){
+        this.db.execute('INSERT INTO role (title, salary, department_id) VALUES (?,?,?);', [role_title, role_salary, role_department_id], (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }
             else{
                 console.log(role_title + " is added")
+                ask_questions();
             }
         })
     };
 
-    add_employee(first_name, last_name, role_id, manager_id){
-        this.db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?);', [first_name, last_name, role_id, manager_id], (err, results) => {
+    add_employee(first_name, last_name, role_id, manager_id,ask_questions){
+        this.db.execute('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?);', [first_name, last_name, role_id, manager_id], (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }
             else{
                 console.log("Employee " + first_name + " " + last_name + " is added")
+                ask_questions();
             }
         })
     };
 
-    update_employee_manager(employee_id, manager_id){
-        this.db.query('UPDATE employee SET manager_id = ? WHERE id = ?;', [manager_id,employee_id], (err, results) => {
+    update_employee_role(employee_id, role_id,ask_questions){
+        this.db.execute('UPDATE employee SET role_id = ? WHERE id = ?;', [role_id,employee_id], (err, results) => {
+            if(err){
+                console.log("Error:", err);
+            }
+            else{
+                console.log("Employee role is updated")
+                ask_questions();
+            }
+        })
+    }
+
+    update_employee_manager(employee_id, manager_id,ask_questions){
+        this.db.execute('UPDATE employee SET manager_id = ? WHERE id = ?;', [manager_id,employee_id], (err, results) => {
             if(err){
                 console.log("Error:", err);
             }
             else{
                 console.log(`The manager for employee ${employee_id} is updated to ${manager_id}`)
+                ask_questions();
             }
         })
     };
 
-    show_employee_by_manager(manager_id){
-        this.db.query('SELECT * FROM employee WHERE manager_id = ?;', [manager_id], (err, results) => {
+    show_employee_by_manager(manager_id,ask_questions){
+        this.db.execute('SELECT * FROM employee WHERE manager_id = ?;', [manager_id], (err, results) => {
             
             if(err){
                 console.log("Error:", err);
             }
             else{
                 console.table(results);
+                ask_questions();
             }
         })
     };
 
-    show_employee_by_department(department_id){
-        this.db.query('SELECT employee.id,employee.first_name,employee.last_name,employee.role_id,employee.manager_id, role.department_id FROM employee join role on employee.role_id = role.id WHERE role.department_id = ?;', [department_id], (err, results) => {
+    show_employee_by_department(department_id,ask_questions){
+        this.db.execute('SELECT employee.id,employee.first_name,employee.last_name,employee.role_id,employee.manager_id, role.department_id FROM employee join role on employee.role_id = role.id WHERE role.department_id = ?;', [department_id], (err, results) => {
             if(err){
                 console.log("Error:", err);
             }
             else{
                 console.table(results);
-        }
+                ask_questions();
+            }
     })
     };
 
-    delete_employee(employee_id){
-        this.db.query('DELETE FROM employee WHERE id = ?;', [employee_id], (err, results) => {
+    delete_employee(employee_id,ask_questions){
+        this.db.execute('DELETE FROM employee WHERE id = ?;', [employee_id], (err, results) => {
             if(err){
                 console.log("Error:", err);
             }
             else{
                 console.log(`The employee with id ${employee_id} is deleted`)
+                ask_questions();
             }
         })
 
     }
 
-    delete_role(role_id){
-        this.db.query('DELETE FROM role WHERE id = ?;', [role_id], (err, results) => {
+    delete_role(role_id,ask_questions){
+        this.db.execute('DELETE FROM role WHERE id = ?;', [role_id], (err, results) => {
             if(err){
                 console.log("Error:", err);
             }
             else{
                 console.log(`The role with id ${role_id} is deleted`)
+                ask_questions();
             }
         })
     }
 
-    delete_department(department_id){
-        this.db.query('DELETE FROM department WHERE id = ?;', [department_id], (err, results) => {
+    delete_department(department_id,ask_questions){
+        this.db.execute('DELETE FROM department WHERE id = ?;', [department_id], (err, results) => {
             if(err){
                 console.log("Error:", err);
             }
             else{
                 console.log(`The department with id ${department_id} is deleted`)
+                ask_questions();
             }
         })
     }
 
-    show_utilized_budget(){
-        this.db.query('SELECT SUM(role.salary) AS utilized_budget FROM employee join role on employee.role_id = role.id;', (err, results) => {
+    show_utilized_budget(department_id,ask_questions){
+        this.db.execute('SELECT SUM(role.salary) AS utilized_budget FROM employee join role on employee.role_id = role.id where role.department_id = ?;', department_id,(err, results) => {
             if(err){
                 console.log("Error:", err);
             }
             else{
                 console.log(`Utilized budget: ${results[0].utilized_budget}`)
+                ask_questions();
             }
         })
     }
+
+    get_employee_info = function(){
+        return new Promise((resolve, reject) => {
+            this.db.execute("SELECT * FROM employee", (err, results) => {
+                if (err) {
+                    console.log("Error:", err);
+                    reject(err);
+                }
+                else{
+                    const choices = results.map(employee => ({
+                        name: `${employee.id}. ${employee.first_name} ${employee.last_name}`, // Adjust this according to your database structure
+                        value: employee.id // Assuming `id` is the unique identifier for each employee
+                    }));
+                    resolve(choices);
+                    
+                }
+                
+            })
+        }) 
+    };
+
+    get_role_info = function(){
+        return new Promise((resolve, reject) => {
+            this.db.execute("SELECT * FROM role", (err, results) => {
+                if (err) {
+                    console.log("Error:", err);
+                    reject(err);
+                }
+                else{
+                    const choices = results.map(role => ({
+                        name: `${role.id}. ${role.title} - ${role.salary}`, // Adjust this according to your database structure
+                        value: role.id // Assuming `id` is the unique identifier for each employee
+                    }));
+                    resolve(choices);
+                    
+                }
+                
+            })
+        })
+       
+        
+    };
 }
 
 module.exports = DatabaseOperation;
