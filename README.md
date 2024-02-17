@@ -3,7 +3,7 @@
 
 <div align="center">
   <a href="https://github.com/Jason897571/Raccoon-Employee-Tracker">
-    <img src="./public/assets/image/logo.png" alt="Logo" width="80" height="80">
+    <img src="./image/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Raccoon Note Taker</h3>
@@ -51,11 +51,12 @@
 
 <p><strong>Start Page</strong></p>
 
-![alt text](image.png)
+
+![alt text](./image/start.png)
 
 <br />
 
-This is the start page when you open the website.
+This is the start page when you download the project.
 
 
 
@@ -64,7 +65,7 @@ This is the start page when you open the website.
 ## Built with
 This generator is made with Javascript.
 
-* ![Alt text](./public/assets/image/javascript.png)
+* ![Alt text](./image/javascript.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -86,7 +87,11 @@ You should have your shell ready for downloading this project. We use gitbash as
    ```sh
    git clone https://github.com/Jason897571/Raccoon-Employee-Tracker.git
    ```
-3. Open the project using vs code and input node index.js in your terminal
+3. Open the project using vs code and open your mysql terminal to import `schemal.sql` and `seeds.sql`. Then you will see three tables in your database.
+
+4. In your terminal, input `npm start` to start the server.
+
+
 
 
 
@@ -96,28 +101,28 @@ You should have your shell ready for downloading this project. We use gitbash as
 <a id="usage"></a>
 ## Usage
 
-When you open the project in code editor and input `node server.js` in the terminal, you will see the following page.
-Open your terminal and input node index.js
-
-![Alt text](./public/assets/image/image.png)
+When you input `npm start` In your terminal to start the server, you will see the following page.
 
 
-You can click `Get Started` in the browser to see the note taker page.
-![alt text](./public/assets/image/note-taker.png)
+![Alt text](./image/terminal.png)
 
-You could input your Note tile and Note text and click `Save Note` to save them in to the database.
 
-![alt text](./public/assets/image/save-note.png)
+There are many options for you. For example, View all employee, View all roles, add a role, update employee's info etc.
 
-For more details, please refer to the [Documentation](https://github.com/Jason897571/Raccoon-Employee-Tracker)
+![alt text](./image/view_all_departments.png)
+![alt text](./image/view_all_roles.png)
+![alt text](./image/view_all_employees.png)
+
+
+For more details, please refer to the [Documentation](https://github.com/Jason897571/Raccoon-Employee-Tracker) or [Video](https://drive.google.com/file/d/1M-gGJv8WTPyUfoR1LIr6bXMF6Er_WBt6/view?usp=sharing)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <a id="future_additions"></a>
 ## Future Additions
-* Add login and sign up functions
-* Add tags to each note so that it has different level of emergency.
+* Create a visual UI and run it in a browser
+* Create data analyse function to show the relationship between different tables
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
