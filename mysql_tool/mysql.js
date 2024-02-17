@@ -48,7 +48,20 @@ class DatabaseOperation {
     };
 
     show_employees(ask_questions){
-        this.db.execute("SELECT * FROM employee;", (err, results) => {
+        let sql = `SELECT 
+                        a.id,
+                        a.first_name,
+                        a.last_name,
+                        role.title,
+                        department.name AS department_name,
+                        role.salary,
+                        CONCAT(b.first_name, ' ', b.last_name) AS manager
+                    FROM employee a 
+                    LEFT JOIN role ON role.id = a.role_id 
+                    LEFT JOIN department ON role.department_id = department.id
+                    LEFT JOIN employee b ON a.manager_id = b.id;`
+
+        this.db.execute(sql, (err, results) => {
             if (err) {
                 console.log("Error:", err);
             }

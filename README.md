@@ -14,7 +14,7 @@
     <a href="https://github.com/Jason897571/Raccoon-Employee-Tracker"><strong>Click here for Github Repo  »</strong></a>
     <br />
     <br />
-    <a href="">Walk-Through Video</a>
+    <a href="https://drive.google.com/file/d/1M-gGJv8WTPyUfoR1LIr6bXMF6Er_WBt6/view?usp=sharing">Walk-Through Video</a>
     ·
     <a href="https://github.com/Jason897571/Raccoon-Employee-Tracker/issues">Report Bug</a>
     ·

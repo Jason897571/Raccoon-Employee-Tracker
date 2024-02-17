@@ -66,9 +66,10 @@ async function getQuestions() {
     
     },
     {
-        type: 'input',
+        type: 'list',
         name: 'role_department',
         message: 'which department does the role belong to',
+        choices: departmentChoices,
         when: (answers) => answers.all_choice === "Add A Role"
     
     },
@@ -88,13 +89,14 @@ async function getQuestions() {
         type: 'list',
         name: 'role_id',
         message: `What is the employee's role?`,
-        choices: ['Sales Manager', 'Sales Representative', 'Marketing Manager', 'Marketing Specialist', 'Software Engineer', 'QA Engineer', 'HR Manager', 'Recruiter', 'Finance Director', 'Accountant'],
+        choices: roleChoices,
         when: (answers) => answers.all_choice === "Add An Employee"
     },
     {
-        type: 'input',
+        type: 'list',
         name: 'manager_id',
-        message: `What is the employee's manager?`,
+        message:"who is the manager for this employee",
+        choices: employeeChoices,
         when: (answers) => answers.all_choice === "Add An Employee"
     },
     {
@@ -217,7 +219,7 @@ const ask_questions = async ()=>{
            
         }
         else if(answers.all_choice === "Add An Employee"){
-            db.add_employee(answers.first_name, answers.last_name, answers.role_id,answers.manager_id,ask_questions);
+            db.add_employee(answers.first_name, answers.last_name, answers.role_id,answers.manager_id[0],ask_questions);
            
         }
         else if(answers.all_choice === "Update An Employee Role"){
